@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ReuvenTyk/royal-crm/issues"
   },
-  "homepage": "https://github.com/ReuvenTyk/royal-crm#readme"
+  "homepage": "https://github.com/ReuvenTyk/royal-crm#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
