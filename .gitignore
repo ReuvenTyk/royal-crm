@@ -1,3 +1,7 @@
+//ignore folders
+
 /node_modules/
+
+//ignore files
 .vscode
 .idea
