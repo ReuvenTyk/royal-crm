@@ -1,31 +1,22 @@
 let customers = [];
 
-function addCustomers(user) {
-  let arr = [];
-  if (user == "") {
+//for one UserName at a time
+function addCustomers() {
+  let username = process.argv.slice(2);
+  if (!username || username.length === 0) {
     console.log("empty");
     return;
-  } else {
-    for (let i = 0; i < user.length; i++) {
-      let obj = {
-        username: user[i],
-        password: `${user[i]}1`,
-      };
-      arr.push(obj);
-    }
   }
-  return arr;
+  const tempPass = Math.floor(Math.random() * 1000000);
+
+  customers.push({
+    username: username,
+    password: tempPass,
+  });
+
+  customers.forEach((costumer) => {
+    console.log(costumer);
+  });
 }
-
-customers = addCustomers(process.argv.slice(2));
-//solution 1
-/* for (let i = 0; i < costumers.length; i++) {
-  console.log(costumers[i]);
-} */
-
-//solution 2
-customers.forEach((costumer) => {
-  console.log(costumer);
-});
 
 addCustomers();
