@@ -1,6 +1,6 @@
-let products = [];
+let customers = [];
 
-function addProducts(user) {
+function addCustomers(user) {
   let arr = [];
   if (user == "") {
     console.log("empty");
@@ -17,13 +17,15 @@ function addProducts(user) {
   return arr;
 }
 
-products = addProducts(process.argv.slice(2));
+customers = addCustomers(process.argv.slice(2));
 //solution 1
 /* for (let i = 0; i < costumers.length; i++) {
   console.log(costumers[i]);
 } */
 
 //solution 2
-products.forEach((costumer) => {
+customers.forEach((costumer) => {
   console.log(costumer);
 });
+
+addCustomers();
