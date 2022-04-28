@@ -1,28 +1,29 @@
 //for One order at a time
+module.exports = {
+  list: [],
 
-let orders = [];
+  addOrders: function () {
+    let orderName = process.argv.slice(2);
+    if (!orderName || orderName.length === 0) {
+      console.log("empty");
+      return;
+    }
 
-function addOrders() {
-  let orderName = process.argv.slice(2);
-  if (!orderName || orderName.length === 0) {
-    console.log("empty");
-    return;
-  }
+    this.list.push({
+      name: orderName,
+      id: this.list.length,
+    });
+  },
 
-  orders.push({
-    name: orderName,
-    id: orders.length,
-  });
+  ordersList: function () {
+    this.list.forEach((order) => {
+      console.log(`the name: ${order.name} was created`);
+    });
+  },
+};
 
-  orders.forEach((order) => {
-    console.log(order);
-  });
-}
-
-addOrders();
-
-/*My solution multi orders
- let orders = [];
+/*My solution multi list
+ let list = [];
 
 function addOrders(order) {
   let arr = [];
@@ -42,7 +43,7 @@ function addOrders(order) {
 
 products = addOrders(process.argv.slice(2));
 
-orders.forEach((order) => {
+list.forEach((order) => {
   console.log(order);
 });
  */

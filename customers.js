@@ -1,22 +1,27 @@
-let customers = [];
+// if doing all file as module
 
-//for one UserName at a time
-function addCustomers() {
-  let username = process.argv.slice(2);
-  if (!username || username.length === 0) {
-    console.log("empty");
-    return;
-  }
-  const tempPass = Math.floor(Math.random() * 1000000);
+//const customers
+module.exports = {
+  list: [],
 
-  customers.push({
-    username: username,
-    password: tempPass,
-  });
+  addCustomers: function () {
+    let name = process.argv.slice(2);
+    if (!name || name.length === 0) {
+      console.log("empty");
+      return;
+    }
 
-  customers.forEach((costumer) => {
-    console.log(costumer);
-  });
-}
+    this.list.push({
+      name: name,
+      id: this.list.length,
+    });
+  },
 
-addCustomers();
+  customersList: function () {
+    this.list.forEach((costumer) => {
+      console.log(`the name: ${costumer.name} was created`);
+    });
+  },
+};
+
+/* module.exports = customers; */
