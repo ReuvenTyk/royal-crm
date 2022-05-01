@@ -1,6 +1,8 @@
 #ignore folders
 /node_modules/
+/config/
 
 #ignore files
 .vscode
 .idea
+.jade
