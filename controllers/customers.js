@@ -1,5 +1,5 @@
 // if doing all file as module
-const config = require("./config/dev");
+const config = require("../config/dev");
 const mysql = require("mysql2");
 
 const pool = mysql.createPool({
