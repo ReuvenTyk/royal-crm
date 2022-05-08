@@ -4,6 +4,7 @@
 
 - node.js
 - express.js
+- mySql
 
 install dependencies:
 
