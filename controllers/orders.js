@@ -1,15 +1,4 @@
-const config = require("../config/dev");
-const mysql = require("mysql2");
-
-const pool = mysql.createPool({
-  host: config.DB_HOST,
-  user: config.DB_USER,
-  password: config.DB_PASSWORD,
-  database: config.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 5,
-  queueLimit: 0,
-});
+const database = require("./database");
 
 module.exports = {
   //list: [],
@@ -18,7 +7,7 @@ module.exports = {
     //let orderName = process.argv.slice(2);
     if (!quantity) throw "empty";
 
-    pool.getConnection(function (connErr, connection) {
+    database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr;
 
       const sql = "INSERT INTO orders(price,quantity)" + "VALUES(?,?)";
@@ -37,7 +26,7 @@ module.exports = {
   },
 
   ordersList: function (req, res) {
-    pool.getConnection(function (connErr, connection) {
+    database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr; //not connected!
 
       const sql = "SELECT * FROM orders";

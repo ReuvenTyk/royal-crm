@@ -1,15 +1,4 @@
-const config = require("../config/dev");
-const mysql = require("mysql2");
-
-const pool = mysql.createPool({
-  host: config.DB_HOST,
-  user: config.DB_USER,
-  password: config.DB_PASSWORD,
-  database: config.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 5,
-  queueLimit: 0,
-});
+const database = require("./database");
 
 module.exports = {
   //products: [],
@@ -23,7 +12,7 @@ module.exports = {
       id: this.products.length,
     }); */
 
-    pool.getConnection(function (connErr, connection) {
+    database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr;
 
       const sql =
@@ -48,7 +37,7 @@ module.exports = {
       console.log(`the name: ${product.name} was created`);
     }); */
 
-    pool.getConnection(function (connErr, connection) {
+    database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr; //not connected!
 
       const sql = "SELECT * FROM products";
