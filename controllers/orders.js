@@ -1,23 +1,52 @@
-//for One order at a time
+const config = require("../config/dev");
+const mysql = require("mysql2");
+
+const pool = mysql.createPool({
+  host: config.DB_HOST,
+  user: config.DB_USER,
+  password: config.DB_PASSWORD,
+  database: config.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 5,
+  queueLimit: 0,
+});
+
 module.exports = {
-  list: [],
+  //list: [],
 
-  addOrders: function () {
-    let orderName = process.argv.slice(2);
-    if (!orderName || orderName.length === 0) {
-      console.log("empty");
-      return;
-    }
+  addOrders: function (price, quantity) {
+    //let orderName = process.argv.slice(2);
+    if (!quantity) throw "empty";
 
-    this.list.push({
-      name: orderName,
-      id: this.list.length,
+    pool.getConnection(function (connErr, connection) {
+      if (connErr) throw connErr;
+
+      const sql = "INSERT INTO orders(price,quantity)" + "VALUES(?,?)";
+
+      connection.query(
+        sql,
+        [price, quantity],
+        function (sqlErr, result, fields) {
+          if (sqlErr) throw sqlErr;
+
+          console.log(fields);
+          console.log(result);
+        }
+      );
     });
   },
 
-  ordersList: function () {
-    this.list.forEach((order) => {
-      console.log(`the name: ${order.name} was created`);
+  ordersList: function (req, res) {
+    pool.getConnection(function (connErr, connection) {
+      if (connErr) throw connErr; //not connected!
+
+      const sql = "SELECT * FROM orders";
+
+      connection.query(sql, function (sqlErr, result, fields) {
+        if (sqlErr) throw sqlErr;
+
+        res.send(result);
+      });
     });
   },
 };
