@@ -10,7 +10,9 @@ module.exports = {
     database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr;
 
-      const sql = "INSERT INTO orders(price,quantity)" + "VALUES(?,?)";
+      const sql =
+        "INSERT INTO orders(customer_id,product_id,price,quantity)" +
+        "VALUES(?,?,?,?)";
 
       connection.query(
         sql,
@@ -25,8 +27,18 @@ module.exports = {
     });
   },
 
-  ordersList: function (req, res) {
-    database.pool.getConnection(function (connErr, connection) {
+  ordersList: async function (req, res) {
+    const sql = "SELECT * FROM orders";
+    try {
+      //using async function
+      const connection = await database.getConnection();
+      const result = await database.runQuery(connection, sql);
+      res.send(result);
+    } catch (err) {
+      console.log(err);
+    }
+
+    /* database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr; //not connected!
 
       const sql = "SELECT * FROM orders";
@@ -36,7 +48,7 @@ module.exports = {
 
         res.send(result);
       });
-    });
+    }); */
   },
 };
 

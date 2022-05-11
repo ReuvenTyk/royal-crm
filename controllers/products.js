@@ -32,11 +32,25 @@ module.exports = {
     });
   },
 
-  productsList: function (req, res) {
-    /* this.products.forEach((product) => {
-      console.log(`the name: ${product.name} was created`);
-    }); */
+  productsList: async function (req, res) {
+    const sql = "SELECT * FROM products";
 
+    try {
+      //using async function
+      const connection = await database.getConnection();
+      const result = await database.runQuery(connection, sql);
+      res.send(result);
+    } catch (err) {
+      console.log(err);
+    }
+
+    /* 
+    database
+      .getConnection()
+      .then((connection) => database.runQuery(connection, sql))
+      .then((result) => res.send(result))
+      .catch((err) => console.log(err)); 
+    
     database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr; //not connected!
 
@@ -47,6 +61,6 @@ module.exports = {
 
         res.send(result);
       });
-    });
+    }); */
   },
 };

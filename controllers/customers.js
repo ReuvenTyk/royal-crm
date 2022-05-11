@@ -32,20 +32,39 @@ module.exports = {
     });
   },
 
-  customersList: function (req, res) {
-    database.pool.getConnection(function (connErr, connection) {
-      if (connErr) throw connErr; //not connected!
+  customersList: async function (req, res) {
+    //get the DB
+    const sql = "SELECT * FROM customers";
 
+    try {
+      //using async function
+      const connection = await database.getConnection();
+      const result = await database.runQuery(connection, sql);
+      res.send(result);
+    } catch (err) {
+      console.log(err);
+    }
+
+    //using promise
+    /* database
+      .getConnection()
+      .then((connection) => database.runQuery(connection, sql))
+      .then((result) => res.send(result))
+      .catch((err) => console.log(err)); */
+
+    /*     database.pool.getConnection(function (connErr, connection) {
+      if (connErr) throw connErr; //not connected!
+      
       //get the DB
       const sql = "SELECT * FROM customers";
 
       //connection to DB and check the query
-      connection.query(sql, function (sqlErr, result, fields) {
+      connection.query(sql, (sqlErr, result, fields) {
         if (sqlErr) throw sqlErr;
 
         res.send(result);
-      });
-    });
+      }    )
+    }); */
   },
 };
 
