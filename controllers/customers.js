@@ -91,19 +91,20 @@ module.exports = {
 
   //todo: delete customer
   //sql: DROP
+  deleteCustomer: async function (req, res, next) {},
 
   //todo: export all customers
   //sql: SELECT
+  exportCustomer: async function (req, res, next) {},
 
   //todo: sort customers bt column
   //sql: SORT BY ASC/DESC
 
-  //todo: search in customers by parameter(name,email,country)
-  //sql: SELECT WHERE
-
   //todo: edit/update customer
+  findCustomer: async function (req, res, next) {},
 
   //todo: view more details of a customer
+  viewCustomersDetails: async function (req, res, next) {},
 };
 
 /* module.exports = customers; */

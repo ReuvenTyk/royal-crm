@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const customersModule = require("../controllers/customers");
+const cm = require("../controllers/customers");
 const productsModule = require("../controllers/products");
 const ordersModule = require("../controllers/orders");
 
@@ -9,8 +9,24 @@ router.get("/", function (req, res, next) {
   res.send("this is the home page. use /customers or /products or /orders");
 });
 //customers
-router.get("/customers", customersModule.customersList);
-router.get("/customers-add", customersModule.addCustomers);
+router.get("/customers", cm.customersList);
+router.get("/customers-add", cm.addCustomers);
+
+//todo: delete customer
+//router.delete("/customers",cm.deleteCustomer)
+
+//todo: export all customers
+//router.get("/customers-export",cm.exportCustomer)
+
+//todo: sort customers by column
+//router.put("/customers");
+
+//todo: edit/update customer
+//router.patch("/customers",cm.findCustomer)
+
+//todo: view more details of a customer
+//router.get("/customer-details",cm.viewCustomersDetails)
+
 //products
 router.get("/products", productsModule.productsList);
 router.get("/products-add", productsModule.addProducts);
@@ -22,13 +38,13 @@ router.get("/orders-add", ordersModule.addOrders);
 //callback function
 /*router.get("/customers", function (req, res, next) {
   res.send("another change");
-  customersModule.addCustomers(
+  cm.addCustomers(
     "Mr. Green",
     "+1 (021) 145-2256",
     "green@blueberrye.com",
     3
     );
-    customersModule.customersList(req, res);
+    cm.customersList(req, res);
 }); 
 
  router.get("/products", function (req, res, next) {
