@@ -3,7 +3,7 @@ const database = require("./database");
 //const customers
 module.exports = {
   //send values
-  addCustomers: function (name, phone, email, country_id) {
+  /* addCustomers: function (name, phone, email, country_id) {
     // validation
     if (!name || name.length === 0) {
       console.log("empty");
@@ -30,7 +30,7 @@ module.exports = {
         }
       );
     });
-  },
+  }, */
 
   customersList: async function (req, res) {
     //get the DB
@@ -38,9 +38,11 @@ module.exports = {
 
     try {
       //using async function
-      const connection = await database.getConnection();
-      const result = await database.runQuery(connection, sql);
-      res.send(result);
+      /* const connection = await database.getConnection();
+      const result = await database.runQuery(connection, sql); */
+      //going to mySql2 promise func
+      const result = await database.main(sql); //getting back an array
+      res.send(result[0]);
     } catch (err) {
       console.log(err);
     }

@@ -3,14 +3,14 @@ const database = require("./database");
 module.exports = {
   //products: [],
 
-  addProducts: function (name, description, price, image) {
+  /* addProducts: function (name, description, price, image) {
     //let productName = process.argv.slice(2);
     if (!name || name.length === 0) throw "empty";
 
     /* this.products.push({
       name: productName,
       id: this.products.length,
-    }); */
+    }); 
 
     database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr;
@@ -30,16 +30,18 @@ module.exports = {
         }
       );
     });
-  },
+  }, */
 
   productsList: async function (req, res) {
     const sql = "SELECT * FROM products";
 
     try {
       //using async function
-      const connection = await database.getConnection();
-      const result = await database.runQuery(connection, sql);
-      res.send(result);
+      /* const connection = await database.getConnection();
+      const result = await database.runQuery(connection, sql); */
+      //going on mySql2
+      const result = await database.main(sql);
+      res.send(result[0]);
     } catch (err) {
       console.log(err);
     }

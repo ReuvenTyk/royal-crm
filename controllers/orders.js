@@ -3,7 +3,7 @@ const database = require("./database");
 module.exports = {
   //list: [],
 
-  addOrders: function (price, quantity) {
+  /* addOrders: function (price, quantity) {
     //let orderName = process.argv.slice(2);
     if (!quantity) throw "empty";
 
@@ -25,15 +25,17 @@ module.exports = {
         }
       );
     });
-  },
+  }, */
 
   ordersList: async function (req, res) {
     const sql = "SELECT * FROM orders";
     try {
       //using async function
-      const connection = await database.getConnection();
-      const result = await database.runQuery(connection, sql);
-      res.send(result);
+      /* const connection = await database.getConnection();
+      const result = await database.runQuery(connection, sql); */
+      //going on mySql2
+      const result = await database.main(sql);
+      res.send(result[0]);
     } catch (err) {
       console.log(err);
     }

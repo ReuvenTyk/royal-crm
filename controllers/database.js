@@ -18,7 +18,7 @@ async function main(sql) {
   //instead of the getConnection function
   const promisePool = pool.promise();
   //instead of the runQuery function
-  const [row, fields] = await promisePool.query(sql);
+  return ([row, fields] = await promisePool.query(sql));
 }
 
 //coming build in mySql2 package
@@ -42,8 +42,8 @@ function runQuery(connection, sql) {
 }
  */
 module.exports = {
-  pool,
   main,
-  /* getConnection,
+  /* pool,
+  getConnection,
   runQuery, */
 };
