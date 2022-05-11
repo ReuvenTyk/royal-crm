@@ -3,7 +3,7 @@ const config = require("../config/dev");
 //open connection to the DB
 const mysql = require("mysql2");
 
-//connection pool stats
+//connection pool configuration
 const pool = mysql.createPool({
   host: config.DB_HOST,
   user: config.DB_USER,
@@ -14,7 +14,15 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-function getConnection() {
+async function main(sql) {
+  //instead of the getConnection function
+  const promisePool = pool.promise();
+  //instead of the runQuery function
+  const [row, fields] = await promisePool.query(sql);
+}
+
+//coming build in mySql2 package
+/* function getConnection() {
   return new Promise(function (res, rej) {
     pool.getConnection(function (connErr, connection) {
       if (connErr) rej(connErr); //not connected!
@@ -32,9 +40,10 @@ function runQuery(connection, sql) {
     });
   });
 }
-
+ */
 module.exports = {
   pool,
-  getConnection,
-  runQuery,
+  main,
+  /* getConnection,
+  runQuery, */
 };
