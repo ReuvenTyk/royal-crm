@@ -3,10 +3,26 @@ const database = require("./database");
 module.exports = {
   //products: [],
 
-  /* addProducts: function (name, description, price, image) {
-    //let productName = process.argv.slice(2);
+  addProducts: async function (req, res, next) {
+    const qs = req.query;
+    const name = qs.name;
+    const description = qs.description;
+    const price = qs.price;
+    const image = qs.image;
+
     if (!name || name.length === 0) throw "empty";
 
+    try {
+      const result = await database.main(sql, [
+        name,
+        description,
+        price,
+        image,
+      ]);
+      res.send(result[0]);
+    } catch (err) {
+      console.log(err);
+    }
     /* this.products.push({
       name: productName,
       id: this.products.length,
@@ -28,9 +44,8 @@ module.exports = {
           console.log(fields);
           console.log(result);
         }
-      );
-    });
-  }, */
+      );*/
+  },
 
   productsList: async function (req, res) {
     const sql = "SELECT * FROM products";

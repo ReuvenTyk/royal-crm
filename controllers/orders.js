@@ -3,11 +3,20 @@ const database = require("./database");
 module.exports = {
   //list: [],
 
-  /* addOrders: function (price, quantity) {
+  addOrders: async function (req, res, next) {
     //let orderName = process.argv.slice(2);
-    if (!quantity) throw "empty";
+    const qs = req.query;
+    const price = qs.price;
+    const quantity = qs.quantity;
 
-    database.pool.getConnection(function (connErr, connection) {
+    if (!quantity) throw "empty";
+    try {
+      const result = await database.main(sql, [price, quantity]);
+      res.send(result[0]);
+    } catch (err) {
+      console.log(err);
+    }
+    /* database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr;
 
       const sql =
@@ -24,8 +33,8 @@ module.exports = {
           console.log(result);
         }
       );
-    });
-  }, */
+    }); */
+  },
 
   ordersList: async function (req, res) {
     const sql = "SELECT * FROM orders";

@@ -8,9 +8,15 @@ const ordersModule = require("../controllers/orders");
 router.get("/", function (req, res, next) {
   res.send("this is the home page. use /customers or /products or /orders");
 });
+//customers
 router.get("/customers", customersModule.customersList);
+router.get("/customers-add", customersModule.addCustomers);
+//products
 router.get("/products", productsModule.productsList);
+router.get("/products-add", productsModule.addProducts);
+//orders
 router.get("/orders", ordersModule.ordersList);
+router.get("/orders-add", ordersModule.addOrders);
 
 //calling the function without callback
 //callback function

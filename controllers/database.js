@@ -14,11 +14,11 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-async function main(sql) {
+async function main(sql, values) {
   //instead of the getConnection function
   const promisePool = pool.promise();
   //instead of the runQuery function
-  return ([row, fields] = await promisePool.query(sql));
+  return ([row, fields] = await promisePool.query(sql, values));
 }
 
 //coming build in mySql2 package

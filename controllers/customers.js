@@ -3,14 +3,34 @@ const database = require("./database");
 //const customers
 module.exports = {
   //send values
-  /* addCustomers: function (name, phone, email, country_id) {
+  addCustomers: async function (req, res, next) {
+    /* takeing the function parameters out on the ()
+    name, phone, email, country_id;
+ */
+
+    const qs = req.query;
+    const name = qs.name;
+    const phone = qs.phone;
+    const email = qs.email;
+    const country_id = qs.country_id;
+
     // validation
     if (!name || name.length === 0) {
-      console.log("empty");
-      return;
+      throw "name is empty";
     }
+
+    const sql =
+      "INSERT INTO customers(name,phone,email,country_id)" + "VALUES(?,?,?,?)";
+    try {
+      const result = await database.main(sql, [name, phone, email, country_id]); //getting back an array [row,fields]
+      res.send(`${name} added successfully`);
+    } catch (err) {
+      console.log(err);
+    }
+
+    //going to mySql2
     //open connection to the DB
-    database.pool.getConnection(function (connErr, connection) {
+    /*  database.pool.getConnection(function (connErr, connection) {
       if (connErr) throw connErr; //not connected!
 
       //write query
@@ -29,8 +49,8 @@ module.exports = {
           console.log(result);
         }
       );
-    });
-  }, */
+    }); */
+  },
 
   customersList: async function (req, res) {
     //get the DB
@@ -68,6 +88,22 @@ module.exports = {
       }    )
     }); */
   },
+
+  //todo: delete customer
+  //sql: DROP
+
+  //todo: export all customers
+  //sql: SELECT
+
+  //todo: sort customers bt column
+  //sql: SORT BY ASC/DESC
+
+  //todo: search in customers by parameter(name,email,country)
+  //sql: SELECT WHERE
+
+  //todo: edit/update customer
+
+  //todo: view more details of a customer
 };
 
 /* module.exports = customers; */
