@@ -1,14 +1,19 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const cm = require("../controllers/customers");
 const productsModule = require("../controllers/products");
 const ordersModule = require("../controllers/orders");
+const path = require("path");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.send("this is the home page. use /customers or /products or /orders");
 });
 //customers
+router.get("/customers-home", function (req, res, next) {
+  const filePath = path.join(__dirname, "../client", "customers-home.html");
+  res.sendFile(filePath);
+});
 router.get("/customers", cm.customersList);
 router.get("/customers-add", cm.addCustomers);
 
