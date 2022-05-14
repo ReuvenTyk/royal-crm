@@ -52,9 +52,10 @@ module.exports = {
     }); */
   },
 
-  customersList: async function (req, res) {
+  customersList: async function (req, res, next) {
     //get the DB
-    const sql = "SELECT * FROM customers";
+    const sql =
+      "SELECT customers.name AS name, customers.phone AS phone, customers.email AS email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id";
 
     try {
       //using async function
