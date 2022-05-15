@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const cm = require("../controllers/customers");
-const productsModule = require("../controllers/products");
+const pm = require("../controllers/products");
 const ordersModule = require("../controllers/orders");
 const path = require("path");
 
@@ -33,8 +33,17 @@ router.get("/customers/export", cm.exportCustomer);
 //router.get("/customer-details",cm.viewCustomersDetails)
 
 //products
-router.get("/products", productsModule.productsList);
-router.get("/products-add", productsModule.addProducts);
+router.get("/products-home", function (req, res, next) {
+  const filePath = path.join(__dirname, "../client", "products-home.html");
+  res.sendFile(filePath);
+});
+router.get("/products", pm.productsList);
+router.post("/products", pm.addProduct);
+router.get("/products/export", pm.exportProducts);
+router.patch("/products", pm.editProducts);
+router.delete("/products", pm.deleteProduct);
+router.get("/products/search/:id", pm.searchProducts);
+
 //orders
 router.get("/orders", ordersModule.ordersList);
 router.get("/orders-add", ordersModule.addOrders);

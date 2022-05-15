@@ -3,7 +3,7 @@ const database = require("./database");
 module.exports = {
   //products: [],
 
-  addProducts: async function (req, res, next) {
+  addProduct: async function (req, res, next) {
     const qs = req.query;
     const name = qs.name;
     const description = qs.description;
@@ -48,7 +48,7 @@ module.exports = {
   },
 
   productsList: async function (req, res) {
-    const sql = "SELECT * FROM products";
+    const sql = "SELECT * FROM products ORDER BY name ASC";
 
     try {
       //using async function
@@ -80,4 +80,25 @@ module.exports = {
       });
     }); */
   },
+
+  //todo: export all products to file
+  //sql: SELECT
+  exportProducts: async function (req, res, next) {
+    const sql =
+      "SELECT name, description,price FROM products ORDER BY name ASC";
+  },
+  //todo: delete product
+  //sql: DROP
+  deleteProduct: async function (req, res, next) {},
+
+  //todo: search product
+  //sql: SELECT WHERE
+  searchProducts: async function (req, res, next) {},
+
+  //todo: sort products by column
+  //sql: SORT BY ASC/DESC
+
+  //todo: edit/update product
+  //sql = patch
+  editProducts: async function (req, res, next) {},
 };
