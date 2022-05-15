@@ -15,13 +15,13 @@ router.get("/customers-home", function (req, res, next) {
   res.sendFile(filePath);
 });
 router.get("/customers", cm.customersList);
-router.get("/customers-add", cm.addCustomers);
+router.post("/customers", cm.addCustomers);
 
 //todo: delete customer
 //router.delete("/customers",cm.deleteCustomer)
 
 //todo: export all customers
-//router.get("/customers-export",cm.exportCustomer)
+router.get("/customers/export", cm.exportCustomer);
 
 //todo: sort customers by column
 //router.put("/customers");
