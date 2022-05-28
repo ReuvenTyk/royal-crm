@@ -1,9 +1,9 @@
-//the connection stats
+//the connection stats - from the configuration file
 const config = require("../config/dev");
 //open connection to the DB
 const mysql = require("mysql2");
 
-//connection pool configuration
+//connection pool configuration - the data from the config file
 const pool = mysql.createPool({
   host: config.DB_HOST,
   user: config.DB_USER,
@@ -14,36 +14,15 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-async function main(sql, values) {
-  //instead of the getConnection function
+//mySql2 code
+async function query(sql, values) {
+  //making the connection
   const promisePool = pool.promise();
-  //instead of the runQuery function
+  //running the query
   return ([row, fields] = await promisePool.query(sql, values));
 }
 
-//coming build in mySql2 package
-/* function getConnection() {
-  return new Promise(function (res, rej) {
-    pool.getConnection(function (connErr, connection) {
-      if (connErr) rej(connErr); //not connected!
-      else res(connection);
-    });
-  });
-}
-
-function runQuery(connection, sql) {
-  return new Promise(function (res, rej) {
-    //connection to DB and check the query
-    connection.query(sql, function (sqlErr, result, fields) {
-      if (sqlErr) rej(sqlErr);
-      else res(result);
-    });
-  });
-}
- */
 module.exports = {
-  main,
-  /* pool,
-  getConnection,
-  runQuery, */
+  //sending the table back as row and fields
+  query,
 };
