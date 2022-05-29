@@ -1,90 +1,85 @@
+const joi = require("joi");
 const database = require("./database");
+const fs = require("fs");
+const path = require("path");
 
 module.exports = {
-  //list: [],
+  /* addOrders: async function (req, res, next) {
+    //using joi package for validation
+    const reqBody = req.body;
+    const schema = joi.object({
+      customer_id: joi.number().required(),
+      price: joi.number().required(),
+      quantity: joi.number().required(),
+      product_name: joi.string().required().min(2).max(100),
+      product_desc: joi.string().required().min(2).max(300),
+      product_image: joi.string(),
+    });
 
-  addOrders: async function (req, res, next) {
-    //let orderName = process.argv.slice(2);
-    const qs = req.query;
-    const price = qs.price;
-    const quantity = qs.quantity;
+    const { error } = schema.validate(reqBody);
 
-    if (!quantity) throw "empty";
+    if (error) {
+      res.send(`error adding order: ${error}`);
+      return;
+    }
+
+    const sql =
+      "INSERT INTO orders(customer_id,price,quantity,product_name,product_desc,product_image)" +
+      "VALUES(?,?,?,?,?)";
     try {
-      const result = await database.main(sql, [price, quantity]);
-      res.send(result[0]);
+      const result = await database.query(sql, [
+        reqBody.customer_id,
+        reqBody.price,
+        reqBody.quantity,
+        reqBody.product_name,
+        reqBody.product_desc,
+        reqBody.product_image,
+      ]); //getting back an array [row,fields]
     } catch (err) {
       console.log(err);
+      return;
     }
-    /* database.pool.getConnection(function (connErr, connection) {
-      if (connErr) throw connErr;
-
-      const sql =
-        "INSERT INTO orders(customer_id,product_id,price,quantity)" +
-        "VALUES(?,?,?,?)";
-
-      connection.query(
-        sql,
-        [price, quantity],
-        function (sqlErr, result, fields) {
-          if (sqlErr) throw sqlErr;
-
-          console.log(fields);
-          console.log(result);
-        }
-      );
-    }); */
-  },
+    res.send(`${reqBody.name} added successfully`);
+  }, */
 
   ordersList: async function (req, res) {
-    const sql = "SELECT * FROM orders";
+    const sql =
+      "SELECT orders.id, orders.order_time, orders.price, orders.quantity, " +
+      "orders.product_name, orders.product_desc, orders.product_image, customers.id AS customer_id, " +
+      "customers.name, customers.phone, customers.email FROM orders orders LEFT JOIN customers customers " +
+      "ON orders.id = customers.id ORDER BY orders.id ASC;";
     try {
-      //using async function
-      /* const connection = await database.getConnection();
-      const result = await database.runQuery(connection, sql); */
-      //going on mySql2
-      const result = await database.main(sql);
+      const result = await database.query(sql);
       res.send(result[0]);
     } catch (err) {
       console.log(err);
     }
+  },
 
-    /* database.pool.getConnection(function (connErr, connection) {
-      if (connErr) throw connErr; //not connected!
+  exportOrders: async function (req, res, next) {
+    const sql =
+      "SELECT orders.order_time, orders.price, orders.quantity, " +
+      "orders.product_name, orders.product_desc, orders.product_image, " +
+      "customers.name, customers.phone, customers.email FROM orders orders LEFT JOIN customers customers " +
+      "ON orders.id = customers.id ORDER BY orders.id ASC;";
 
-      const sql = "SELECT * FROM orders";
+    try {
+      const result = await database.query(sql);
 
-      connection.query(sql, function (sqlErr, result, fields) {
-        if (sqlErr) throw sqlErr;
+      const now = new Date().getTime();
+      const filePath = path.join(__dirname, "../files", `orders-${now}.txt`);
+      const stream = fs.createWriteStream(filePath);
 
-        res.send(result);
+      stream.on("open", function () {
+        stream.write(JSON.stringify(result[0]));
+        stream.end();
       });
-    }); */
+
+      stream.on("finish", function () {
+        res.send(`Success. file at: ${filePath}`);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   },
 };
-
-/*My solution multi list
- let list = [];
-
-function addOrders(order) {
-  let arr = [];
-  if (order == "") {
-    console.log("empty");
-    return;
-  } else {
-    for (let i = 0; i < order.length; i++) {
-      arr.push({
-        name: order[i],
-        id: arr.length,
-      });
-    }
-  }
-  return arr;
-}
-
-products = addOrders(process.argv.slice(2));
-
-list.forEach((order) => {
-  console.log(order);
-});
- */

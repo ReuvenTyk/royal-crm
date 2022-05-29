@@ -8,6 +8,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var customersRouter = require("./routes/customers");
 var productsRouter = require("./routes/products");
+var ordersRouter = require("./routes/orders");
 
 var app = express();
 app.use(logger("dev"));
@@ -22,5 +23,7 @@ app.use("/users", usersRouter);
 app.use("/customers", customersRouter);
 //next line add /products to the URL => http://localhost:3000/products
 app.use("/products", productsRouter);
+//next line add /products to the URL => http://localhost:3000/orders
+app.use("/orders", ordersRouter);
 
 module.exports = app;
