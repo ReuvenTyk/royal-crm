@@ -7,6 +7,7 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var customersRouter = require("./routes/customers");
+var productsRouter = require("./routes/products");
 
 var app = express();
 app.use(logger("dev"));
@@ -19,5 +20,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 //next line add /costumers to the URL => http://localhost:3000/costumers
 app.use("/customers", customersRouter);
+//next line add /products to the URL => http://localhost:3000/products
+app.use("/products", productsRouter);
 
 module.exports = app;

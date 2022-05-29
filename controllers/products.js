@@ -1,50 +1,38 @@
 const database = require("./database");
-
+const joi = require("joi");
+const fs = require("fs");
+const path = require("path");
 module.exports = {
-  //products: [],
-
   addProduct: async function (req, res, next) {
-    const qs = req.query;
-    const name = qs.name;
-    const description = qs.description;
-    const price = qs.price;
-    const image = qs.image;
+    const reqBody = req.body;
+    const schema = joi.object({
+      name: joi.string().required().min(2).max(100),
+      description: joi.string().required().min(2).max(300),
+      price: joi.number().required(),
+      //image: joi.string(),
+    });
 
-    if (!name || name.length === 0) throw "empty";
+    const { error } = schema.validate(reqBody);
+
+    if (error) {
+      res.send(`error adding product: ${error}`);
+      return;
+    }
+
+    const sql =
+      "INSERT INTO products(name,description,price)" + "VALUES(?,?,?)";
 
     try {
-      const result = await database.main(sql, [
-        name,
-        description,
-        price,
-        image,
+      const result = await database.query(sql, [
+        reqBody.name,
+        reqBody.description,
+        reqBody.price,
       ]);
-      res.send(result[0]);
     } catch (err) {
       console.log(err);
+      return;
     }
-    /* this.products.push({
-      name: productName,
-      id: this.products.length,
-    }); 
-
-    database.pool.getConnection(function (connErr, connection) {
-      if (connErr) throw connErr;
-
-      const sql =
-        "INSERT INTO products(name,description,price,image)" +
-        "VALUES(?,?,?,?)";
-
-      connection.query(
-        sql,
-        [name, description, price, image],
-        function (sqlErr, result, fields) {
-          if (sqlErr) throw sqlErr;
-
-          console.log(fields);
-          console.log(result);
-        }
-      );*/
+    res.send(`${reqBody.name} added successfully`);
   },
 
   productsList: async function (req, res) {
@@ -52,53 +40,51 @@ module.exports = {
 
     try {
       //using async function
-      /* const connection = await database.getConnection();
-      const result = await database.runQuery(connection, sql); */
       //going on mySql2
-      const result = await database.main(sql);
+      const result = await database.query(sql);
       res.send(result[0]);
     } catch (err) {
       console.log(err);
     }
-
-    /* 
-    database
-      .getConnection()
-      .then((connection) => database.runQuery(connection, sql))
-      .then((result) => res.send(result))
-      .catch((err) => console.log(err)); 
-    
-    database.pool.getConnection(function (connErr, connection) {
-      if (connErr) throw connErr; //not connected!
-
-      const sql = "SELECT * FROM products";
-
-      connection.query(sql, function (sqlErr, result, fields) {
-        if (sqlErr) throw sqlErr;
-
-        res.send(result);
-      });
-    }); */
   },
 
   //todo: export all products to file
   //sql: SELECT
   exportProducts: async function (req, res, next) {
-    const sql =
-      "SELECT name, description,price FROM products ORDER BY name ASC";
+    const sql = "SELECT name,description,price FROM products ORDER BY name ASC";
+
+    try {
+      const result = await database.query(sql);
+
+      const now = new Date().getTime();
+      const filePath = path.join(__dirname, "../files", `products-${now}.txt`);
+      const stream = fs.createWriteStream(filePath);
+
+      stream.on("open", function () {
+        stream.write(JSON.stringify(result[0]));
+        stream.end();
+      });
+
+      stream.on("finish", function () {
+        res.send(`Success. file at: ${filePath}`);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   },
-  //todo: delete product
-  //sql: DROP
-  deleteProduct: async function (req, res, next) {},
-
-  //todo: search product
-  //sql: SELECT WHERE
-  searchProducts: async function (req, res, next) {},
-
-  //todo: sort products by column
-  //sql: SORT BY ASC/DESC
-
-  //todo: edit/update product
-  //sql = patch
-  editProducts: async function (req, res, next) {},
 };
+
+//todo: delete product
+//sql: DROP
+//deleteProduct: async function (req, res, next) {},
+
+//todo: search product
+//sql: SELECT WHERE
+//searchProducts: async function (req, res, next) {},
+
+//todo: sort products by column
+//sql: SORT BY ASC/DESC
+
+//todo: edit/update product
+//sql = patch
+//editProducts: async function (req, res, next) {},
