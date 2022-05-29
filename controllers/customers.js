@@ -31,7 +31,7 @@ module.exports = {
     const sql =
       "INSERT INTO customers(name,phone,email,country_id)" + "VALUES(?,?,?,?)";
     try {
-      const result = await database.main(sql, [
+      const result = await database.query(sql, [
         reqBody.name,
         reqBody.phone,
         reqBody.email,
@@ -51,7 +51,7 @@ module.exports = {
 
     try {
       //going to mySql2 promise func
-      const result = await database.main(sql); //getting back an array
+      const result = await database.query(sql); //getting back an array
       res.send(result[0]);
     } catch (err) {
       console.log(err);
@@ -64,7 +64,7 @@ module.exports = {
       "SELECT customers.name, customers.phone, customers.email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id ORDER BY customers.name ASC";
 
     try {
-      const result = await database.main(sql);
+      const result = await database.query(sql);
 
       const now = new Date().getTime();
       const filePath = path.join(__dirname, "../files", `customers-${now}.txt`);
@@ -96,5 +96,3 @@ module.exports = {
   //todo: view more details of a customer
   viewCustomersDetails: async function (req, res, next) {},
 };
-
-/* module.exports = customers; */
