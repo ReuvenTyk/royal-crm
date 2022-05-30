@@ -5,6 +5,15 @@
 - node.js
 - express.js
 - mySql
+- jsonwebtoken
+- bcrypt
+
+## To get a password:
+
+- node
+- require('bcrypt').hash('123456', 10, function(e,h){console.log(h)})
+- in the hash('password', time-how hard the password will be encrypted)
+- getting the password (to over right the sign in)
 
 ## Prepare The Environment
 
