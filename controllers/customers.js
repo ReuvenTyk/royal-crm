@@ -53,8 +53,7 @@ module.exports = {
       sort: joi.string().valid("ASC", "DESC").default("ASC"),
     });
 
-    const { error, value } = schema.validate(param);
-
+    const { error } = schema.validate(param);
     const column = error ? "name" : param.column;
     const sort = error ? "ASC" : param.sort;
 
