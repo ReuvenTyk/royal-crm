@@ -1,7 +1,6 @@
 const joi = require("joi");
 const database = require("./database");
-const fs = require("fs");
-const path = require("path");
+const fileMgmt = require("../shared/fileMgmt");
 
 module.exports = {
   /* addOrders: async function (req, res, next) {
@@ -56,30 +55,13 @@ module.exports = {
     }
   },
 
-  exportOrders: async function (req, res, next) {
+  exportOrders: function (req, res, next) {
     const sql =
       "SELECT orders.order_time, orders.price, orders.quantity, " +
       "orders.product_name, orders.product_desc, orders.product_image, " +
       "customers.name, customers.phone, customers.email FROM orders orders LEFT JOIN customers customers " +
       "ON orders.id = customers.id ORDER BY orders.id ASC;";
 
-    try {
-      const result = await database.query(sql);
-
-      const now = new Date().getTime();
-      const filePath = path.join(__dirname, "../files", `orders-${now}.txt`);
-      const stream = fs.createWriteStream(filePath);
-
-      stream.on("open", function () {
-        stream.write(JSON.stringify(result[0]));
-        stream.end();
-      });
-
-      stream.on("finish", function () {
-        res.send(`Success. file at: ${filePath}`);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    fileMgmt.exportToFie(res, sql, "orders");
   },
 };

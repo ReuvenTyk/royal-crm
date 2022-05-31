@@ -1,7 +1,7 @@
 const joi = require("joi");
 const database = require("./database");
-const fs = require("fs");
-const path = require("path");
+const fileMgmt = require("../shared/fileMgmt");
+
 //const customers
 module.exports = {
   //send values
@@ -45,9 +45,21 @@ module.exports = {
   },
 
   customersList: async function (req, res, next) {
+    const param = req.query; // get method
+    //const param = req.body;// post method
+
+    const schema = joi.object({
+      column: joi.string().valid("name", "email", "country_id").default("name"),
+      sort: joi.string().valid("ASC", "DESC").default("ASC"),
+    });
+
+    const { error, value } = schema.validate(param);
+
+    const column = error ? "name" : param.column;
+    const sort = error ? "ASC" : param.sort;
+
     //get the DB
-    const sql =
-      "SELECT customers.name AS name, customers.phone AS phone, customers.email AS email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id ORDER BY customers.name ASC";
+    const sql = `SELECT customers.name AS name, customers.phone AS phone, customers.email AS email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id ORDER BY customers.${column} ${sort}`;
 
     try {
       //going to mySql2 promise func
@@ -55,32 +67,16 @@ module.exports = {
       res.send(result[0]);
     } catch (err) {
       console.log(err);
+      res.send(err);
     }
   },
 
   //export all customers to file
-  exportCustomer: async function (req, res, next) {
+  exportCustomer: function (req, res, next) {
     const sql =
-      "SELECT customers.name, customers.phone, customers.email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id ORDER BY customers.name ASC";
+      "SELECT customers.name, customers.phone, customers.email, countries.name AS country_name, countries.country_code AS country_code FROM customers customers JOIN countries ON customers.country_id = countries.id ORDER BY customers.name ASC";
 
-    try {
-      const result = await database.query(sql);
-
-      const now = new Date().getTime();
-      const filePath = path.join(__dirname, "../files", `customers-${now}.txt`);
-      const stream = fs.createWriteStream(filePath);
-
-      stream.on("open", function () {
-        stream.write(JSON.stringify(result[0]));
-        stream.end();
-      });
-
-      stream.on("finish", function () {
-        res.send(`Success. file at: ${filePath}`);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    fileMgmt.exportToFie(res, sql, "customers");
   },
 
   //todo: delete customer

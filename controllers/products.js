@@ -1,7 +1,7 @@
 const database = require("./database");
 const joi = require("joi");
-const fs = require("fs");
-const path = require("path");
+const fileMgmt = require("../shared/fileMgmt");
+
 module.exports = {
   addProduct: async function (req, res, next) {
     const reqBody = req.body;
@@ -50,27 +50,10 @@ module.exports = {
 
   //todo: export all products to file
   //sql: SELECT
-  exportProducts: async function (req, res, next) {
+  exportProducts: function (req, res, next) {
     const sql = "SELECT name,description,price FROM products ORDER BY name ASC";
 
-    try {
-      const result = await database.query(sql);
-
-      const now = new Date().getTime();
-      const filePath = path.join(__dirname, "../files", `products-${now}.txt`);
-      const stream = fs.createWriteStream(filePath);
-
-      stream.on("open", function () {
-        stream.write(JSON.stringify(result[0]));
-        stream.end();
-      });
-
-      stream.on("finish", function () {
-        res.send(`Success. file at: ${filePath}`);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    fileMgmt.exportToFie(res, sql, "products");
   },
 };
 

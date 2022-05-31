@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+//auth router
 const auth = require("./middleware/auth");
 
 var indexRouter = require("./routes/index");
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "client")));
 
+//add the auth to the routers to denied the access without login
 app.use("/", indexRouter);
 app.use("/users", auth, usersRouter);
 //next line add /costumers to the URL => http://localhost:3000/costumers
