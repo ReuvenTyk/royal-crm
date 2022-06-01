@@ -53,12 +53,26 @@ module.exports = {
       sort: joi.string().valid("ASC", "DESC").default("ASC"),
     });
 
-    const { error } = schema.validate(param);
-    const column = error ? "name" : param.column;
-    const sort = error ? "ASC" : param.sort;
+    const { error, value } = schema.validate(param);
+
+    /* 
+      mapping:
+      if the key then give me the value
+
+      example:
+      fieldsMap.get('email'); =>'customer.email
+    */
+
+    const fieldMap = new Map([
+      // key , value
+      ["name", "customers.name"],
+      ["email", "customers.email"],
+      ["country_id", "customers.country_id"],
+    ]);
 
     //get the DB
-    const sql = `SELECT customers.name AS name, customers.phone AS phone, customers.email AS email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id ORDER BY customers.${column} ${sort}`;
+    const sql = `SELECT customers.name AS name, customers.phone AS phone, customers.email AS email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id 
+    ORDER BY ${fieldMap.get(value.column)} ${value.sort}`;
 
     try {
       //going to mySql2 promise func
@@ -77,13 +91,45 @@ module.exports = {
 
     fileMgmt.exportToFie(res, sql, "customers");
   },
+  // search in customers by parameters
+  findCustomer: async function (req, res, next) {
+    const param = req.query;
+
+    const schema = joi.object({
+      //the name that we'll right in the name at the HTML
+      search: joi.string().required().min(2),
+    });
+
+    const { error, value } = schema.validate(param);
+
+    if (error) {
+      res.status(400).send(`Search in Invalid: ${error}`);
+      throw error;
+    }
+
+    const searchQuery = `%${value.search}%`;
+
+    const sql = `SELECT customers.name AS name, customers.phone AS phone, customers.email AS email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id 
+    WHERE customers.name LIKE ? OR customers.email LIKE ? OR country_id LIKE ?
+    ORDER BY customers.name ASC; `;
+
+    try {
+      const result = await database.query(sql, [
+        //checking each ? in the sql above
+        searchQuery,
+        searchQuery,
+        searchQuery,
+      ]);
+      res.send(result[0]);
+    } catch (err) {
+      res.status(400).send(`Search in Invalid: ${error}`);
+      throw error;
+    }
+  },
 
   //todo: delete customer
   //sql: DROP
   deleteCustomer: async function (req, res, next) {},
-
-  //todo: sort customers bt column
-  //sql: SORT BY ASC/DESC
 
   //todo: edit/update customer
   updateCustomer: async function (req, res, next) {},

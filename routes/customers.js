@@ -11,7 +11,7 @@ router.get("/home", function (req, res, next) {
 });
 
 router.get("/", cm.customersList);
-//router.get("/details", cm.viewCustomersDetails);
+router.get("/find", cm.findCustomer);
 router.get("/export", cm.exportCustomer);
 router.post("/", cm.addCustomers);
 //router.patch("/", cm.updateCustomer);
