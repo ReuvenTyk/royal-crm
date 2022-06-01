@@ -16,7 +16,7 @@ module.exports = {
         .string()
         .required()
         .regex(/^[^@]+@[^@]+$/),
-      country_id: joi.string().required(),
+      countryId: joi.string().required(),
     });
 
     const { error, value } = schema.validate(reqBody);
@@ -25,6 +25,10 @@ module.exports = {
       res.send(`error adding customer: ${error}`);
       return;
     }
+
+    // const sql =
+    //     "INSERT INTO customers(name, phone, email, country_id)" +
+    //     " VALUES(?,?,?,?);";
 
     try {
       const database = await mongo.getDb();

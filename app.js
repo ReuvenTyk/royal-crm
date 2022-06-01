@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, "client")));
 app.use("/", indexRouter);
 app.use("/users", auth, usersRouter);
 //next line add /costumers to the URL => http://localhost:3000/costumers
-app.use("/customers", auth, customersRouter);
+app.use("/customers", customersRouter);
 //next line add /products to the URL => http://localhost:3000/products
 app.use("/products", auth, productsRouter);
 //next line add /products to the URL => http://localhost:3000/orders
