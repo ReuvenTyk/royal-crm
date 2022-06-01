@@ -10,6 +10,12 @@ router.get("/home", function (req, res, next) {
   res.sendFile(filePath);
 });
 
+//http://localhost:3000/costumers/details/:id =>changing parameter
+router.get("/details/:id", function (req, res, next) {
+  const filePath = fileMgmt.getHtmlFilePath("customer-details.html");
+  res.sendFile(filePath);
+});
+
 router.get("/", cm.customersList);
 router.get("/find", cm.findCustomer);
 router.get("/export", cm.exportCustomer);
