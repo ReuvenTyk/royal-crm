@@ -16,7 +16,7 @@ module.exports = {
         .string()
         .required()
         .regex(/^[^@]+@[^@]+$/),
-      countryId: joi.string().required(),
+      country_id: joi.string().required(),
     });
 
     const { error, value } = schema.validate(reqBody);
