@@ -1,5 +1,5 @@
 const joi = require("joi");
-const mongo = require("./database");
+const database = require("./database");
 const fileMgmt = require("../shared/fileMgmt");
 
 //const customers
@@ -21,69 +21,66 @@ module.exports = {
       country_id: joi.number().required(),
     });
 
-    const { error, value } = schema.validate(reqBody);
+    const { error } = schema.validate(reqBody);
 
     if (error) {
       res.send(`error adding customer: ${error}`);
       return;
     }
 
-    // const sql =
-    //   "INSERT INTO customers(name,phone,email,country_id)" + "VALUES(?,?,?,?)";
+    const sql =
+      "INSERT INTO customers(name,phone,email,country_id)" + "VALUES(?,?,?,?)";
     try {
-      const database = await mongo.getDB();
-      const collection = database.collection("customers");
-      collection.insertOne(value);
-      res.json(value);
+      const result = await database.query(sql, [
+        reqBody.name,
+        reqBody.phone,
+        reqBody.email,
+        reqBody.country_id,
+      ]); //getting back an array [row,fields]
     } catch (err) {
       console.log(err);
-      res.status(400).send("error adding customer");
+      return;
     }
+    res.send(`${reqBody.name} added successfully`);
   },
 
   customersList: async function (req, res, next) {
     const param = req.query; // get method
     //const param = req.body;// post method
 
-    // const schema = joi.object({
-    //   column: joi.string().valid("name", "email", "country_id").default("name"),
-    //   sort: joi.string().valid("ASC", "DESC").default("ASC"),
-    // });
+    const schema = joi.object({
+      column: joi.string().valid("name", "email", "country_id").default("name"),
+      sort: joi.string().valid("ASC", "DESC").default("ASC"),
+    });
 
-    // const { error, value } = schema.validate(param);
+    const { error, value } = schema.validate(param);
 
-    // /*
-    //   mapping:
-    //   if the key then give me the value
+    /* 
+      mapping:
+      if the key then give me the value
 
-    //   example:
-    //   fieldsMap.get('email'); =>'customer.email
-    // */
+      example:
+      fieldsMap.get('email'); =>'customer.email
+    */
 
-    // const fieldMap = new Map([
-    //   // key , value
-    //   ["name", "customers.name"],
-    //   ["email", "customers.email"],
-    //   ["country_id", "customers.country_id"],
-    // ]);
+    const fieldMap = new Map([
+      // key , value
+      ["name", "customers.name"],
+      ["email", "customers.email"],
+      ["country_id", "customers.country_id"],
+    ]);
 
-    // //get the DB
-    // const sql = `SELECT customers.name AS name, customers.phone AS phone, customers.email AS email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id
-    // ORDER BY ${fieldMap.get(value.column)} ${value.sort}`;
+    //get the DB
+    const sql = `SELECT customers.name AS name, customers.phone AS phone, customers.email AS email, countries.name AS country_name, countries.country_code AS country_code FROM customers JOIN countries ON customers.country_id = countries.id 
+    ORDER BY ${fieldMap.get(value.column)} ${value.sort}`;
 
     try {
       //going to mySql2 promise func
-      const database = await mongo.getDB();
-      const collection = database.collection("customers");
-
-      const result = await collection
-        .find({})
-        .sort({ name: 1 }) //ASC
-        .toArray();
-      res.json(result);
+      const result = await database.query(sql); //getting back an array
+      res.send(result[0]);
     } catch (err) {
       console.log(err);
-      res.status(400).send(err);
+      res.send(err);
     }
   },
 
