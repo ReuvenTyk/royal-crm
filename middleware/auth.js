@@ -4,7 +4,9 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/dev");
 
 module.exports = (req, res, next) => {
-  const token = req.cookies.access_token; //todo: use auth header instead
+  //const token = req.cookies.access_token; //use auth by cookie
+  const token = req.header("x-auth-token"); //use auth by header
+
   if (!token) res.status(401).send(`Access Denied. go to /signin`);
 
   try {

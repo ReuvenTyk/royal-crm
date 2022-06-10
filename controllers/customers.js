@@ -55,6 +55,10 @@ module.exports = {
 
     const { error, value } = schema.validate(param);
 
+    if (error) {
+      res.status(400).send("add failed");
+      throw error;
+    }
     /* 
       mapping:
       if the key then give me the value

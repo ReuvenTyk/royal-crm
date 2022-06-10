@@ -35,21 +35,26 @@ module.exports = {
         rows[0].password_hash
       );
       if (!validPassword) throw "Invalid password";
+
+      const param = { email: reqBody.email };
+      const token = jwt.sign(param, config.JWT_SECRET, { expiresIn: "72800s" });
+
+      //use authorization by cookie
+      // res
+      //   .cookie("access_token", token, {
+      //     httpOnly: true,
+      //     secure: true,
+      //   })
+      //   .send("Welcome, you are now logged in.");
+
+      // use header authorization
+      res.json({
+        token: token,
+      });
     } catch (err) {
       console.log(`Error: ${err}`);
       res.status(401).send("Unauthorized");
       return;
     }
-
-    const param = { email: reqBody.email };
-    const token = jwt.sign(param, config.JWT_SECRET, { expiresIn: "72800s" });
-
-    //todo: use authorization header
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        secure: true,
-      })
-      .send("Welcome, you are now logged in.");
   },
 };
