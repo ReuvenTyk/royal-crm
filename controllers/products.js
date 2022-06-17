@@ -87,9 +87,9 @@ module.exports = {
     const schema = joi
       .object({
         // the client needs to send product id
-        name: joi.string().required().min(2).max(100),
-        description: joi.string().required().min(2).max(300),
-        price: joi.number().required(),
+        name: joi.string().min(2).max(100),
+        description: joi.string().min(2).max(300),
+        price: joi.number(),
         image: joi.string().min(5).max(200),
       })
       .min(1); // at least one change
@@ -108,7 +108,7 @@ module.exports = {
     const keys = Object.keys(value); //getting the keys as array of the validated data
     const values = Object.values(value); //getting the value as array of the validated data
     const fields = keys.map((key) => `${key}=?`).join(","); // change the array to ['name=?,description=?...']
-
+    values.push(req.params.id);
     const sql = `UPDATE products SET ${fields} WHERE id=?`;
 
     try {
