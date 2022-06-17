@@ -15,8 +15,8 @@ router.get("/home", function (req, res, next) {
 router.get("/", pm.productsList);
 router.get("/export", pm.exportProducts);
 router.post("/", pm.addProduct);
-//router.patch("/products", pm.editProducts);
-//router.delete("/products", pm.deleteProduct);
+router.put("/:id", pm.editProducts);
+router.delete("/:id", pm.deleteProduct); //sending product id
 //router.get("/products/search/:id", pm.searchProducts);
 
 module.exports = router;
