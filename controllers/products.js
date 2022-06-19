@@ -113,7 +113,7 @@ module.exports = {
 
     try {
       const result = await database.query(sql, values);
-      res.jason(value);
+      res.json(value);
     } catch (err) {
       console.log(err);
       return;
