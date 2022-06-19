@@ -6,9 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
-  header = 'header';
   brandName = 'Royal CRM';
-  userName = 'John';
+  userName = 'john';
+  today = new Date();
+
+  constructor() {}
+
   ngOnInit(): void {}
 }
