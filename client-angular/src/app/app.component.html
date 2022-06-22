@@ -1,9 +1,16 @@
 <app-header></app-header>
 <!-- got the name from class in app.component.ts -->
+<div>
+  <div *ngFor="let label of labels">
+    <app-button [label]="label"></app-button>
+  </div>
+</div>
+<app-footer></app-footer>
+<!-- <app-button></app-button>
 <app-button></app-button>
 <app-button></app-button>
-<app-button></app-button>
-<router-outlet></router-outlet>
+ --><router-outlet
+></router-outlet>
 
 <!-- []-- property biding -->
 <!-- {{}}-- data biding -->

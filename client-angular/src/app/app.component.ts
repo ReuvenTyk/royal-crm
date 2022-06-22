@@ -9,4 +9,5 @@ export class AppComponent {
   getTitleColor(): string {
     return 'red';
   }
+  labels = ['Customers', 'Products', 'Orders'];
 }
