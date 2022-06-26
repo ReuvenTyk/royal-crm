@@ -1,0 +1,38 @@
+<div class="wrapper">
+  <div class="text-center mt-4 name">Log in Form</div>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-3 mt-3">
+    <div class="form-field d-flex align-items-center">
+      <span class="far fa-user"></span>
+      <input
+        #emailField
+        formControlName="email"
+        type="text"
+        name="email"
+        id="email"
+        placeholder="Email"
+      />
+    </div>
+    <div class="form-field d-flex align-items-center">
+      <span class="fas fa-key"></span>
+      <input
+        formControlName="password"
+        type="password"
+        name="password"
+        id="pwd"
+        placeholder="Password"
+      />
+    </div>
+    <button [disabled]="!loginForm.valid" type="submit" class="btn mt-3">
+      Login
+    </button>
+  </form>
+  <div class="text-center fs-6">
+    <a
+      routerLink="/signup-component"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      class="nav-link"
+      >Create New Account</a
+    >
+  </div>
+</div>
