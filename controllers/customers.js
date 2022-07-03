@@ -49,7 +49,10 @@ module.exports = {
     //const param = req.body;// post method
 
     const schema = joi.object({
-      column: joi.string().valid("name", "email", "country_id").default("name"),
+      column: joi
+        .string()
+        .valid("name", "email", "country_name")
+        .default("name"),
       sort: joi.string().valid("ASC", "DESC").default("ASC"),
     });
 
@@ -59,19 +62,11 @@ module.exports = {
       res.status(400).send("add failed");
       throw error;
     }
-    /* 
-      mapping:
-      if the key then give me the value
-
-      example:
-      fieldsMap.get('email'); =>'customer.email
-    */
-
     const fieldMap = new Map([
       // key , value
       ["name", "customers.name"],
       ["email", "customers.email"],
-      ["country_id", "customers.country_id"],
+      ["country_name", "customers.country_id"],
     ]);
 
     //get the DB

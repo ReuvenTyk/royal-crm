@@ -17,10 +17,22 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Email</th>
+      <th>
+        Name<button (click)="sortCustomers('name')">
+          {{ displaySort("name") }}
+        </button>
+      </th>
+      <th>
+        Email<button (click)="sortCustomers('email')">
+          {{ displaySort("email") }}
+        </button>
+      </th>
       <th>Phone</th>
-      <th>Country</th>
+      <th>
+        Country<button (click)="sortCustomers('country_name')">
+          {{ displaySort("country_name") }}
+        </button>
+      </th>
     </tr>
   </thead>
   <tbody>
