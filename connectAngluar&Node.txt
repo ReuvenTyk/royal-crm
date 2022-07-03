@@ -1,0 +1,9 @@
+1. types.ts > expory interface Name
+2. ng g service core/service-name
+3. Add logic in new service
+4. inject service into component OnInit and bind date to a property
+5. Use the new property in component template
+6. Rus server in a terminal teb
+7. ng serve in another terminal tab
+8. CORS -> add header res.set('Access-Control-Allow-Origin','*');
+9. Check in browser

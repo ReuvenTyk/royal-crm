@@ -24,7 +24,8 @@ module.exports = {
       });
 
       stream.on("finish", function () {
-        res.send(`Success. file at: ${filePath}`);
+        res.set("Access-Control-Allow-Origin", "*");
+        res.json({ path: filePath });
       });
     } catch (err) {
       console.log(err);

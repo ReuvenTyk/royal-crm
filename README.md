@@ -5,8 +5,10 @@
 - node.js
 - express.js
 - mySql
+- nodemon
 - jsonwebtoken
 - bcrypt
+- Angular
 
 ## To get a password:
 
