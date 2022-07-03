@@ -25,7 +25,7 @@ export class CustomersComponent implements OnInit {
         this.customers = data;
       },
       error: (err) => console.error(err),
-      complete: () => console.log('complete'),
+      // complete: () => console.log('complete'),
     });
   }
 
@@ -53,5 +53,9 @@ export class CustomersComponent implements OnInit {
   clearSearch() {
     this.searchFieldValue = '';
     this.getCustomers();
+  }
+
+  customersNum(): number {
+    return this.customers ? this.customers.length : 0;
   }
 }

@@ -5,7 +5,7 @@ export interface Customer {
   phone: string;
   countryId: number;
   country_name: string;
-  countryCode: string;
+  country_code: string;
 }
 
 export interface FilePath {
