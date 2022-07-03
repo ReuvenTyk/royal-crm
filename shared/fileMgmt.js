@@ -11,11 +11,8 @@ module.exports = {
       const result = await database.query(sql);
 
       const now = new Date().getTime();
-      const filePath = path.join(
-        __dirname,
-        "../files",
-        `${filePrefix}-${now}.txt`
-      );
+      const fileName = `${filePrefix}-${now}.txt`;
+      const filePath = path.join(__dirname, "../files", fileName);
       const stream = fs.createWriteStream(filePath);
 
       stream.on("open", function () {
@@ -24,8 +21,7 @@ module.exports = {
       });
 
       stream.on("finish", function () {
-        res.set("Access-Control-Allow-Origin", "*");
-        res.json({ path: filePath });
+        res.json({ name: fileName });
       });
     } catch (err) {
       console.log(err);

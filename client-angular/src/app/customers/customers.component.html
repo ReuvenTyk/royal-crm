@@ -5,11 +5,13 @@
 
 <div>
   <input
+    (keydown)="findCustomer($event)"
     [(ngModel)]="searchFieldValue"
     type="text"
     placeholder="Search by name, email, country"
   />
-  <button (click)="exportCustomersData()">Export</button>
+  <button>Clear</button>
+  <button (click)="exportCustomersData()" class="ms-4">Export</button>
 </div>
 
 <table class="table">

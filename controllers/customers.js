@@ -81,7 +81,7 @@ module.exports = {
     try {
       //going to mySql2 promise func
       const result = await database.query(sql); //getting back an array
-      res.set("Access-Control-Allow-Origin", "*");
+
       res.json(result[0]);
     } catch (err) {
       console.log(err);
@@ -125,7 +125,6 @@ module.exports = {
         searchQuery,
         searchQuery,
       ]);
-      res.set("Access-Control-Allow-Origin", "*");
       res.json(result[0]);
     } catch (err) {
       res.status(400).send(`Search in Invalid: ${error}`);

@@ -4,7 +4,7 @@ const pm = require("../controllers/products");
 const path = require("path");
 const fileMgmt = require("../shared/fileMgmt");
 
-//http://localhost:3000/products
+//${environment.serverUrl}/products
 
 //products
 router.get("/home", function (req, res, next) {

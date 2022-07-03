@@ -1,4 +1,5 @@
 import { Component, NgModule, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { ApiService } from '../core/api.service';
 import { Customer, FilePath } from '../shared/types';
 
@@ -9,7 +10,7 @@ import { Customer, FilePath } from '../shared/types';
 })
 export class CustomersComponent implements OnInit {
   customers!: Array<Customer>;
-  searchFieldValue!: NgModule;
+  searchFieldValue!: string;
   searchTerm!: string;
 
   constructor(private apiService: ApiService) {}
@@ -27,21 +28,21 @@ export class CustomersComponent implements OnInit {
   exportCustomersData() {
     this.apiService.exportCustomers().subscribe({
       next: (data: FilePath) => {
-        window.open(data.path);
+        window.open(`${environment.serverUrl}/${data.name}`);
       },
       error: (err) => console.error(err),
     });
   }
 
   findCustomer(event: KeyboardEvent) {
-    // const value = event.target.value;
-    // if (event.code === 'Enter' && event.target) {
-    //   this.apiService.exportCustomers().subscribe({
-    //     next: (data: Array<Customer>) => {
-    //       this.customers = data;
-    //     },
-    //     error: (err) => console.error(err),
-    //   });
-    // }
+    const value = this.searchFieldValue;
+    if (event.key === 'Enter' && value.length >= 3) {
+      this.apiService.findCustomer(value).subscribe({
+        next: (data: Array<Customer>) => {
+          this.customers = data;
+        },
+        error: (err) => console.error(err),
+      });
+    }
   }
 }

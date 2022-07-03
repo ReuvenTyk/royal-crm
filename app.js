@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const createError = require("http-errors");
+const headers = require("./middleware/headers");
 
 //auth router
 const auth = require("./middleware/auth");
@@ -21,16 +22,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "client")));
-app.use(express.static(path.join(__dirname, "exports")));
+app.use(express.static(path.join(__dirname, "files")));
 
+app.use(headers);
 //add the auth to the routers to denied the access without login
 app.use("/", indexRouter);
 app.use("/users", auth, usersRouter);
-//next line add /costumers to the URL => http://localhost:3000/costumers
+//next line add /costumers to the URL => ${environment.serverUrl}/costumers
 app.use("/customers", auth, customersRouter);
-//next line add /products to the URL => http://localhost:3000/products
+//next line add /products to the URL => ${environment.serverUrl}/products
 app.use("/products", auth, productsRouter);
-//next line add /products to the URL => http://localhost:3000/orders
+//next line add /products to the URL => ${environment.serverUrl}/orders
 app.use("/orders", auth, ordersRouter);
 
 //catch 404 err forward error handler

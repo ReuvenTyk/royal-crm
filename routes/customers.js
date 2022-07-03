@@ -4,13 +4,13 @@ const cm = require("../controllers/customers");
 const path = require("path");
 const fileMgmt = require("../shared/fileMgmt");
 
-//http://localhost:3000/costumers => the router it gets from app.js
+//${environment.serverUrl}/costumers => the router it gets from app.js
 router.get("/home", function (req, res, next) {
   const filePath = fileMgmt.getHtmlFilePath("customers-home.html");
   res.sendFile(filePath);
 });
 
-//http://localhost:3000/costumers/details/:id =>changing parameter
+//${environment.serverUrl}/costumers/details/:id =>changing parameter
 router.get("/details/:id", function (req, res, next) {
   const filePath = fileMgmt.getHtmlFilePath("customer-details.html");
   res.sendFile(filePath);
