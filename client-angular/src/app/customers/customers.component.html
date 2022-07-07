@@ -10,27 +10,33 @@
     type="text"
     placeholder="Search by name, email, country"
   />
-  <button (click)="clearSearch()">Clear</button>
-  <button (click)="exportCustomersData()" class="ms-4">Export</button>
+  <button (click)="clearSearch()"><i class="bi-x-lg"></i></button>
+
+  <button (click)="exportCustomersData()" class="btn btn-primary">
+    <i class="bi-download me-2"></i> Export
+  </button>
 </div>
 
 <table class="table">
   <thead>
     <tr>
-      <th>
-        Name<button (click)="sortCustomers('name')">
-          {{ displaySort("name") }}
+      <th class="align-middle">
+        Name<button (click)="sortCustomers('name')" class="btn btn-defualt">
+          <i [ngClass]="displaySort('name')"></i>
         </button>
       </th>
-      <th>
-        Email<button (click)="sortCustomers('email')">
-          {{ displaySort("email") }}
+      <th class="align-middle">
+        Email<button (click)="sortCustomers('email')" class="btn btn-defualt">
+          <i [ngClass]="displaySort('email')"></i>
         </button>
       </th>
-      <th>Phone</th>
-      <th>
-        Country<button (click)="sortCustomers('country_name')">
-          {{ displaySort("country_name") }}
+      <th class="align-middle">Phone</th>
+      <th class="align-middle">
+        Country<button
+          (click)="sortCustomers('country_name')"
+          class="btn btn-defualt"
+        >
+          <i [ngClass]="displaySort('country_name')"></i>
         </button>
       </th>
     </tr>

@@ -1,0 +1,13 @@
+@import "../common/bootstrap-variables.scss";
+@import "../common/bootstrap.scss";
+
+.dark-theme {
+  background-color: black;
+
+  &,
+  table th,
+  table td,
+  i {
+    color: white;
+  }
+}

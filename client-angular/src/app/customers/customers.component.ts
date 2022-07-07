@@ -1,13 +1,7 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ApiService } from '../core/api.service';
-import {
-  Customer,
-  CustomerSort,
-  FilePath,
-  sortColumn,
-  sortDirection,
-} from '../shared/types';
+import { Customer, CustomerSort, FilePath, sortColumn } from '../shared/types';
 
 @Component({
   selector: 'app-customers',
@@ -26,9 +20,8 @@ export class CustomersComponent implements OnInit {
     this.getCustomers();
 
     this.tableSort = {
-      name: 'ASC',
-      email: 'Default',
-      country_name: 'Default',
+      column: 'name',
+      dirAsc: true,
     };
   }
 
@@ -73,14 +66,15 @@ export class CustomersComponent implements OnInit {
   }
 
   sortCustomers(column: sortColumn) {
-    let direction: sortDirection = this.tableSort[column];
-    if (direction === 'Default' || direction === 'DESC') {
-      direction = 'ASC';
-    } else if (direction === 'ASC') {
-      direction = 'DESC';
+    if (this.tableSort.column === column) {
+      this.tableSort.dirAsc = !this.tableSort.dirAsc;
+    } else {
+      this.tableSort.column = column;
+      this.tableSort.dirAsc = true;
     }
 
-    this.tableSort[column] = direction;
+    const direction = this.tableSort.dirAsc ? 'ASC' : 'DESC';
+
     this.apiService.getSortedCustomers(column, direction).subscribe({
       next: (data: Array<Customer>) => {
         this.customers = data;
@@ -90,14 +84,10 @@ export class CustomersComponent implements OnInit {
   }
 
   displaySort(column: sortColumn): string {
-    const direction: sortDirection = this.tableSort[column];
-    switch (this.tableSort[column]) {
-      case 'ASC':
-        return 'A';
-      case 'DESC':
-        return 'D';
-      default:
-        return '-';
+    if (this.tableSort.column === column) {
+      return this.tableSort.dirAsc ? 'bi-chevron-up' : 'bi-chevron-down';
+    } else {
+      return 'bi-chevron-expand';
     }
   }
 }
