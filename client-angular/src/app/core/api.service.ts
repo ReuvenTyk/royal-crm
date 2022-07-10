@@ -32,4 +32,13 @@ export class ApiService {
       `${environment.serverUrl}/customers/find?search=${searchTerm}`
     );
   }
+  addCustomer(customer: Customer): Observable<Customer> {
+    return this.http.post<Customer>(
+      `${environment.serverUrl}/customers/`,
+      customer,
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  }
 }
