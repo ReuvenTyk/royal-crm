@@ -21,7 +21,7 @@ module.exports = {
       country_id: joi.number().required(),
     });
 
-    const { error } = schema.validate(reqBody);
+    const { error, value } = schema.validate(reqBody);
 
     if (error) {
       res.send(`error adding customer: ${error}`);
@@ -31,7 +31,12 @@ module.exports = {
     const sql =
       "INSERT INTO customers(name,phone,email,country_id)" + "VALUES(?,?,?,?)";
     try {
-      const result = await database.query(sql, value);
+      const result = await database.query(sql, [
+        value.name,
+        value.phone,
+        value.email,
+        value.country_id,
+      ]);
       value.id = result[0].insertId;
       res.json(value);
     } catch (err) {

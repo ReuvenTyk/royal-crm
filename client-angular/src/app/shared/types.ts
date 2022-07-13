@@ -7,6 +7,18 @@ export interface Customer {
   country_name: string;
   country_code: string;
 }
+export interface AddCustomer {
+  name?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  countryId?: number | null;
+}
+
+export interface Country {
+  id: string;
+  name: string;
+  country_code: string;
+}
 
 export interface FilePath {
   name: string;

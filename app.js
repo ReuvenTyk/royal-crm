@@ -14,6 +14,7 @@ var usersRouter = require("./routes/users");
 var customersRouter = require("./routes/customers");
 var productsRouter = require("./routes/products");
 var ordersRouter = require("./routes/orders");
+var countriesRouter = require("./routes/countries");
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use("/customers", auth, customersRouter);
 app.use("/products", auth, productsRouter);
 //next line add /products to the URL => ${environment.serverUrl}/orders
 app.use("/orders", auth, ordersRouter);
+app.use("/countries", auth, countriesRouter);
 
 //catch 404 err forward error handler
 app.use(function (req, res, next) {

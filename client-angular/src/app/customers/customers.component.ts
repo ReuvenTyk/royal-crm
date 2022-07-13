@@ -3,7 +3,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { required } from 'joi';
 import { environment } from 'src/environments/environment';
 import { ApiService } from '../core/api.service';
-import { Customer, CustomerSort, FilePath, sortColumn } from '../shared/types';
+import {
+  AddCustomer,
+  Country,
+  Customer,
+  CustomerSort,
+  FilePath,
+  sortColumn,
+} from '../shared/types';
 
 @Component({
   selector: 'app-customers',
@@ -12,6 +19,7 @@ import { Customer, CustomerSort, FilePath, sortColumn } from '../shared/types';
 })
 export class CustomersComponent implements OnInit {
   customers!: Array<Customer>;
+  countries!: Array<Country>;
   searchFieldValue!: string;
   searchTerm!: string;
   tableSort!: CustomerSort;
@@ -23,12 +31,24 @@ export class CustomersComponent implements OnInit {
       validators: [Validators.required, Validators.email],
     }),
     phone: new FormControl('', { validators: Validators.required }),
-    country: new FormControl('', { validators: Validators.required }),
+    country_id: new FormControl(0, { validators: Validators.required }),
   });
 
   constructor(private apiService: ApiService) {}
 
-  onSubmit() {}
+  onSubmit() {
+    if (!this.customerForm.valid) {
+      return;
+    }
+
+    this.apiService.addCustomer(this.customerForm.value).subscribe({
+      next: (data: Customer) => {
+        this.getCustomers();
+        this.showForm = false;
+      },
+      error: (err) => console.log(err),
+    });
+  }
 
   toggleForm() {
     this.showForm = !this.showForm;
@@ -36,6 +56,7 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCustomers();
+    this.countriesList();
 
     this.tableSort = {
       column: 'name',
@@ -50,6 +71,15 @@ export class CustomersComponent implements OnInit {
       },
       error: (err) => console.error(err),
       // complete: () => console.log('complete'),
+    });
+  }
+
+  countriesList() {
+    this.apiService.countriesList().subscribe({
+      next: (data: Array<Country>) => {
+        this.countries = data;
+      },
+      error: (err) => console.error(err),
     });
   }
 

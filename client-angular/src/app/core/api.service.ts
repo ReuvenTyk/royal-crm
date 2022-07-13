@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Customer, FilePath } from '../shared/types';
+import { AddCustomer, Country, Customer, FilePath } from '../shared/types';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +16,10 @@ export class ApiService {
 
   getSortedCustomers(
     column: string,
-    diraction: string
+    direction: string
   ): Observable<Array<Customer>> {
     return this.http.get<Array<Customer>>(
-      `${environment.serverUrl}/customers?column=${column}&sort=${diraction}`
+      `${environment.serverUrl}/customers?column=${column}&sort=${direction}`
     );
   }
 
@@ -32,7 +32,7 @@ export class ApiService {
       `${environment.serverUrl}/customers/find?search=${searchTerm}`
     );
   }
-  addCustomer(customer: Customer): Observable<Customer> {
+  addCustomer(customer: AddCustomer): Observable<Customer> {
     return this.http.post<Customer>(
       `${environment.serverUrl}/customers/`,
       customer,
@@ -40,5 +40,8 @@ export class ApiService {
         headers: { 'Content-Type': 'application/json' },
       }
     );
+  }
+  countriesList(): Observable<Array<Country>> {
+    return this.http.get<Array<Country>>(`${environment.serverUrl}/countries`);
   }
 }
