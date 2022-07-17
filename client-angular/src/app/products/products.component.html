@@ -1,1 +1,44 @@
-<p>products works!</p>
+<div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="align-middle">
+          Name
+          <!-- <button (click)="sortProducts('name')" class="btn btn-defualt">
+            <i [ngClass]="displaySort('name')"></i>
+          </button> -->
+        </th>
+        <th class="align-middle">
+          price
+          <!-- <button (click)="sortProducts('price')" class="btn btn-defualt">
+            <i [ngClass]="displaySort('price')"></i>
+          </button> -->
+        </th>
+        <th class="align-middle">Action</th>
+        <th class="align-middle"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td class="d-flex flex-row">
+          <div class="me-3">
+            <img
+              [src]="imagePath(product.image)"
+              [alt]="product.description"
+              width="50"
+              height="50"
+            />
+          </div>
+          <div>
+            <div class="fw-bold">{{ product.name }}</div>
+            <div class="fw-light">{{ product.description }}</div>
+          </div>
+        </td>
+        <td>{{ product.price }}</td>
+        <!-- todo: going to be pipe -->
+        <td></td>
+        <!-- todo: going to be actions -->
+      </tr>
+    </tbody>
+  </table>
+</div>

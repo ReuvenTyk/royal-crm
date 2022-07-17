@@ -1,3 +1,5 @@
+import { DecimalPipe } from '@angular/common';
+
 export interface Customer {
   id: number;
   name: string;
@@ -7,6 +9,7 @@ export interface Customer {
   country_name: string;
   country_code: string;
 }
+
 export interface AddCustomer {
   name?: string | null;
   email?: string | null;
@@ -36,4 +39,12 @@ export type themeValues = 'light-theme' | 'dark-theme';
 export interface Theme {
   title: string;
   value: themeValues;
+}
+
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string | null;
 }

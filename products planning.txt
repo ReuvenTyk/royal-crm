@@ -1,0 +1,26 @@
+- get products
+
+server:
+ - [route]
+ - [controller]
+
+client:
+ - component
+ - template
+ - api service
+ - types
+
+
+
+
+======================
+- number of products
+- table structure
+- search
+- export
+- add product
+- delete product
+- edit
+- sort
+- image display
+- price

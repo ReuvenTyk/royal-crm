@@ -42,7 +42,7 @@ module.exports = {
       //using async function
       //going on mySql2
       const result = await database.query(sql);
-      res.send(result[0]);
+      res.json(result[0]);
     } catch (err) {
       console.log(err);
     }
