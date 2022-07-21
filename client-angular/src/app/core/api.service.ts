@@ -62,14 +62,13 @@ export class ApiService {
   }
 
   addCustomer(customer: AddCustomer): Observable<Customer> {
-    /* return this.http.post<Customer>(
-      `${environment.serverUrl}/customers/`,
-      customer,
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    ); */
-    return this.POST<Customer>('login', customer);
+    // return this.http.post<Customer>(
+    //     `${environment.serverUrl}/customers`,
+    //     customer,
+    //     { headers: { 'Content-Type': 'application/json' } }
+    // )
+
+    return this.POST<Customer>(`customers`, customer);
   }
 
   login(details: Login): Observable<User> {
@@ -91,7 +90,10 @@ export class ApiService {
 
   POST<T>(url: string, data: object): Observable<T> {
     return this.http.post<T>(`${environment.serverUrl}/${url}`, data, {
-      headers: { 'x-auth-token': this.token },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': this.token,
+      },
     });
   }
 }

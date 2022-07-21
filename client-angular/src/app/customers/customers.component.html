@@ -103,3 +103,11 @@
     </tbody>
   </table>
 </div>
+
+<app-notification
+  (buttonClicked)="notificationClose($event)"
+  [headerLabel]="'Notice'"
+  [showNotification]="showNotification"
+>
+  <span class="text-white">Success</span>
+</app-notification>

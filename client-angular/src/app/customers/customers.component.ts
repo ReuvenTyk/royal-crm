@@ -24,6 +24,7 @@ export class CustomersComponent implements OnInit {
   searchTerm!: string;
   tableSort!: CustomerSort;
   showForm = false;
+  showNotification = false;
 
   customerForm = new FormGroup({
     name: new FormControl('', { validators: Validators.required }),
@@ -44,10 +45,16 @@ export class CustomersComponent implements OnInit {
     this.apiService.addCustomer(this.customerForm.value).subscribe({
       next: (data: Customer) => {
         this.getCustomers();
-        this.showForm = false;
+        this.showNotification = true;
       },
       error: (err) => console.log(err),
     });
+  }
+
+  notificationClose(state: boolean) {
+    this.showForm = false;
+    this.customerForm.reset();
+    this.showNotification = state;
   }
 
   toggleForm() {

@@ -6,10 +6,23 @@ import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PhonePipe } from './pipes/phone.pipe';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
-  declarations: [ButtonComponent, HeaderComponent, FooterComponent, PhonePipe],
+  declarations: [
+    ButtonComponent,
+    HeaderComponent,
+    FooterComponent,
+    PhonePipe,
+    NotificationComponent,
+  ],
   imports: [CommonModule, AppRoutingModule, ReactiveFormsModule],
-  exports: [ButtonComponent, HeaderComponent, FooterComponent, PhonePipe],
+  exports: [
+    ButtonComponent,
+    HeaderComponent,
+    FooterComponent,
+    PhonePipe,
+    NotificationComponent,
+  ],
 })
 export class SharedModule {}

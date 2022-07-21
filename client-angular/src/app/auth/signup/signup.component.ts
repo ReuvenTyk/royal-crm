@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/core/api.service';
+import { RegisterUser } from 'src/app/shared/types';
 
 @Component({
   selector: 'app-signup',
@@ -65,6 +66,14 @@ export class SignupComponent implements OnInit, AfterViewInit {
     if (!this.validateDate()) {
       return;
     }
+    const value: RegisterUser = this.signupForm.value;
+
+    const details = {
+      first_name: value.first_name,
+      last_name: value.last_name,
+      email: value.email,
+      password: value.password,
+    };
 
     this.apiService.register(this.signupForm.value).subscribe({
       next: (data) => {
