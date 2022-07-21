@@ -1,7 +1,9 @@
-<h1>
+<!-- <h1>
   Customers (<span>{{ customersNum() }}</span
   >)
-</h1>
+</h1> -->
+<app-page-title [nameOfPage]="'Customers'" [totalItems]="customersNum()">
+</app-page-title>
 <div>
   <div class="d-flex mb-4">
     <div class="me-auto p-2">
@@ -24,10 +26,11 @@
       </div>
     </div>
     <div class="p-2">
-      <button (click)="exportCustomersData()" class="btn btn-primary">
+      <!-- <button (click)="exportCustomersData()" class="btn btn-primary">
         <i class="bi-download pe-2"></i>
         Export
-      </button>
+      </button> -->
+      <app-export (buttonClicked)="exportCustomersData()"></app-export>
     </div>
     <div class="p-2">
       <button (click)="toggleForm()" class="btn btn-primary">

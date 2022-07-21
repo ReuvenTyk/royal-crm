@@ -46,6 +46,11 @@ export class ApiService {
     return this.GET<FilePath>('customers/export');
   }
 
+  exportProducts(): Observable<FilePath> {
+    //return this.http.get<FilePath>(`${environment.serverUrl}/customers/export`);
+    return this.GET<FilePath>('products/export');
+  }
+
   findCustomer(searchTerm: string): Observable<Array<Customer>> {
     //return this.http.get<Array<Customer>>(
     //`${environment.serverUrl}/customers/find?search=${searchTerm}`);

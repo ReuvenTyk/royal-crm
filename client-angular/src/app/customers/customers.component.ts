@@ -4,7 +4,6 @@ import { required } from 'joi';
 import { environment } from 'src/environments/environment';
 import { ApiService } from '../core/api.service';
 import {
-  AddCustomer,
   Country,
   Customer,
   CustomerSort,

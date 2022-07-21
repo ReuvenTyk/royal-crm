@@ -7,6 +7,8 @@ import { AppRoutingModule } from '../app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PhonePipe } from './pipes/phone.pipe';
 import { NotificationComponent } from './notification/notification.component';
+import { ExportComponent } from './export/export.component';
+import { PageTitleComponent } from './page-title/page-title.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { NotificationComponent } from './notification/notification.component';
     FooterComponent,
     PhonePipe,
     NotificationComponent,
+    ExportComponent,
+    PageTitleComponent,
   ],
   imports: [CommonModule, AppRoutingModule, ReactiveFormsModule],
   exports: [
@@ -23,6 +27,8 @@ import { NotificationComponent } from './notification/notification.component';
     FooterComponent,
     PhonePipe,
     NotificationComponent,
+    ExportComponent,
+    PageTitleComponent,
   ],
 })
 export class SharedModule {}
