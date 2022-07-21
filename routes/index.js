@@ -10,6 +10,8 @@ router.options("*", function (req, res, next) {
   res.send();
 });
 
+router.post("/register", auth.registerUser);
+
 router.get("/signin", function (req, res, next) {
   const filePath = fileMgmt.getHtmlFilePath("login.html");
   res.sendFile(filePath);

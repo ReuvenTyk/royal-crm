@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ApiService } from 'src/app/core/api.service';
 
 @Component({
   selector: 'app-signup',
@@ -20,10 +21,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
   signupForm = new FormGroup({
-    firstName: new FormControl('', {
+    first_name: new FormControl('', {
       validators: Validators.required,
     }),
-    lastName: new FormControl('', {
+    last_name: new FormControl('', {
       validators: Validators.required,
     }),
     email: new FormControl('', {
@@ -56,15 +57,22 @@ export class SignupComponent implements OnInit, AfterViewInit {
     return true;
   }
 
+  constructor(private apiService: ApiService) {}
   onSubmit() {
-    console.log(this.signupForm.value);
-    console.log(this.validateDate());
+    //console.log(this.signupForm.value);
+    //console.log(this.validateDate());
 
     if (!this.validateDate()) {
       return;
     }
+
+    this.apiService.register(this.signupForm.value).subscribe({
+      next: (data) => {
+        console.log('got in');
+      },
+      error: (err) => console.log(err),
+    });
   }
-  constructor() {}
 
   ngOnInit(): void {}
 }

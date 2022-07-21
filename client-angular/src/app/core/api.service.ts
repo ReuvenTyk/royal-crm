@@ -9,6 +9,7 @@ import {
   FilePath,
   Login,
   Product,
+  RegisterUser,
   User,
 } from '../shared/types';
 
@@ -76,6 +77,10 @@ export class ApiService {
       headers: { 'Content-Type': 'application/json' },
     }); */
     return this.POST<User>('login', details);
+  }
+
+  register(user: RegisterUser): Observable<User> {
+    return this.POST<User>('register', user);
   }
 
   GET<T>(url: string): Observable<T> {
